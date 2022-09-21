@@ -1,4 +1,23 @@
-﻿Function New-JiraTimesheet {
+﻿function TimeEntryStandard {
+    param(
+     [Parameter()] [string] $Issue            = 'Fill IN',
+     [Parameter()] [string] $Comment          = 'Fill IN',
+     [Parameter()] [string] $TimeStarted      = "T08:00:00",
+     [Parameter()] [string] $timeSpentSeconds = "7200"
+     )
+
+    $val = [pscustomobject]@{
+        Started          = "2022-" + (get-date).AddDays(-$i).ToString("MM-dd") + $TimeStarted + ".000+0000"
+        timeSpentSeconds = $timeSpentSeconds
+        comment          = $Comment
+        issue            = $Issue
+    }
+
+    $csv.Add($val) | Out-Null 
+    
+}
+
+Function New-JiraTimesheet {
 <#
 
 .SYNOPSIS
@@ -11,12 +30,11 @@ Creates Timesheet CSV file to be used with RestAPI for Logging Time in Jira
 
 #>
 param(
-     [Parameter()][int]$Days = 1,
-     [Parameter()][string]$Path = 'C:\temp\temp.csv',
-     [Parameter(Mandatory=$false)][Switch]$StandardMeetings,
-     [Parameter(Mandatory=$false)][Switch]$Today
+     [Parameter()]                 [int]    $Days = 1,
+     [Parameter()]                 [string] $Path = 'C:\temp\temp.csv',
+     [Parameter(Mandatory=$false)] [Switch] $StandardMeetings,
+     [Parameter(Mandatory=$false)] [Switch] $Today
      )
-
 
 [System.Collections.ArrayList]$csv = @()
 
@@ -28,79 +46,19 @@ While($i -le $Days){
     if($Today -eq $true){ $i = 0 }
 
     if((get-date).AddDays(-$i).ToString("ddd") -notlike "sat" -and (get-date).AddDays(-$i).ToString("ddd") -notlike "sun"-and (get-date).AddDays(-$i).ToString("ddd") -notlike "fri"){
-        $val = [pscustomobject]@{
-            Day              = (get-date).AddDays(-$i).ToString("MM-ddd")
-            Date             = (get-date).AddDays(-$i).ToString("MM-dd")
-            Started          = "2022-" + (get-date).AddDays(-$i).ToString("MM-dd") + "T08:00:00.000+0000"
-            timeSpentSeconds = "7200"
-            comment          = "Fill IN"
-            issue            = "Fill IN"
-        }
-
-        $csv.Add($val) | Out-Null 
-
+        TimeEntryStandard -Issue "Fill IN" -Comment "Fill IN" -TimeStarted "T08:00:00" -timeSpentSeconds "7200"
         if($StandardMeetings -eq $true){
-            $val = [pscustomobject]@{
-                Day              = (get-date).AddDays(-$i).ToString("MM-ddd")
-                Date             = (get-date).AddDays(-$i).ToString("MM-dd")
-                Started          = "2022-" + (get-date).AddDays(-$i).ToString("MM-dd") + "T10:00:00.000+0000"
-                timeSpentSeconds = "3600"
-                comment          = ""
-                issue            = "AZDO01-1"
-            }
-
-            $csv.Add($val) | Out-Null 
-
+            TimeEntryStandard -Issue "AZDO01-1" -Comment "" -TimeStarted "T10:00:00" -timeSpentSeconds "3600"
         }
-
-        $val = [pscustomobject]@{
-            Day              = (get-date).AddDays(-$i).ToString("MM-ddd")
-            Date             = (get-date).AddDays(-$i).ToString("MM-dd")
-            Started          = "2022-" + (get-date).AddDays(-$i).ToString("MM-dd") + "T13:00:00.000+0000"
-            timeSpentSeconds = "10800"
-            comment          = "Fill IN"
-            issue            = "Fill IN"
-        }
-
-        $csv.Add($val) | Out-Null 
+        TimeEntryStandard -Issue "Fill IN" -Comment "Fill IN" -TimeStarted "T13:00:00" -timeSpentSeconds "10800"
     }
-
+    
     elseif((get-date).AddDays(-$i).ToString("ddd") -like "Fri"){
-        $val = [pscustomobject]@{
-            Day              = (get-date).AddDays(-$i).ToString("MM-ddd")
-            Date             = (get-date).AddDays(-$i).ToString("MM-dd")
-            Started          = "2022-" + (get-date).AddDays(-$i).ToString("MM-dd") + "T08:00:00.000+0000"
-            timeSpentSeconds = "10800"
-            comment          = "Fill IN"
-            issue            = "Fill IN"
-        }
-
-        $csv.Add($val) | Out-Null 
-
+        TimeEntryStandard -Issue "Fill IN" -Comment "Fill IN" -TimeStarted "T08:00:00" -timeSpentSeconds "10800"
         if($StandardMeetings -eq $true){
-            $val = [pscustomobject]@{
-                Day              = (get-date).AddDays(-$i).ToString("MM-ddd")
-                Date             = (get-date).AddDays(-$i).ToString("MM-dd")
-                Started          = "2022-" + (get-date).AddDays(-$i).ToString("MM-dd") + "T11:00:00.000+0000"
-                timeSpentSeconds = "3600"
-                comment          = ""
-                issue            = "AZDO01-1"
-            }
-
-            $csv.Add($val) | Out-Null 
-
+            TimeEntryStandard -Issue "AZDO01-1" -Comment "" -TimeStarted "T11:00:00" -timeSpentSeconds "3600"
         }
-
-        $val = [pscustomobject]@{
-            Day              = (get-date).AddDays(-$i).ToString("MM-ddd")
-            Date             = (get-date).AddDays(-$i).ToString("MM-dd")
-            Started          = "2022-" + (get-date).AddDays(-$i).ToString("MM-dd") + "T13:00:00.000+0000"
-            timeSpentSeconds = "10800"
-            comment          = "Fill IN"
-            issue            = "Fill IN"
-        }
-
-        $csv.Add($val) | Out-Null 
+        TimeEntryStandard -Issue "Fill IN" -Comment "Fill IN" -TimeStarted "T13:00:00" -timeSpentSeconds "10800"
     }
     else {
         $Days = $Days + 1

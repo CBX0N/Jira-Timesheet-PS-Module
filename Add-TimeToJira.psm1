@@ -1,25 +1,21 @@
 ﻿Function Add-TimeToJira {
 <#
-
 .SYNOPSIS
 Creates Timesheet CSV file to be used with RestAPI for Logging Time in Jira
 
 .DESCRIPTION
-
     $Path = 'C:\temp\temp.csv'
     $numberODays = 10
-
 #>
 param(
     [Parameter()][ValidateNotNull()][System.Management.Automation.PSCredential][System.Management.Automation.Credential()]$Credential = [System.Management.Automation.PSCredential]::Empty,
-    [Parameter()][ValidateNotNull()][string]$Path = 'C:\temp\temp.csv'
+    [Parameter()][ValidateNotNull()][string]                                                                              $Path       = 'C:\temp\temp.csv'
      )
 
 $username = $Credential.userName.ToString()
 $authInfo = [System.Text.Encoding]::UTF8.GetBytes((“{0}:{1}” -f $username,([Runtime.InteropServices.Marshal]::PtrToStringBSTR([Runtime.InteropServices.Marshal]::SecureStringToBSTR($Credential.Password)))))
 $authInfo = [System.Convert]::ToBase64String($authInfo)
-
-$csv = Import-Csv -path $Path
+$csv      = Import-Csv -path $Path
 
 Foreach($row in $csv){
     $Body = @{
