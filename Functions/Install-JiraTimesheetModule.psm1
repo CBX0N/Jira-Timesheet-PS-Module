@@ -1,6 +1,6 @@
 Function Install-JiraTimesheetModule {
 
-    if(((test-path Jira.Timesheet.Powershell.psd1) -and (Test-Path ..\Jira.Timesheet.Powershell.psd1)) -eq $False){
+    if(((test-path Jira.Timesheet.Powershell.psd1) -eq $False ) -and ((Test-Path ..\Jira.Timesheet.Powershell.psd1) -eq $False ) ){
         Write-Error -Message "Cannot find Module Manifest." -Category ObjectNotFound
     }
 
