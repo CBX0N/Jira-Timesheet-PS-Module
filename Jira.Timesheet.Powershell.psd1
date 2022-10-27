@@ -7,7 +7,7 @@
 	CompanyName 		    = 'CBXON Limited' 
 	Copyright 		        = '(c) CBXON Limited. All rights reserved.' 
 	Description 		    = 'Jira.Timesheet.Powershell'
-	FunctionsToExport 	    = 'Add-TimeToJira','New-JiraTimesheet'
+	FunctionsToExport 	    = 'Add-TimeToJira','New-JiraTimesheet','Install-JiraTimesheetModule.psm1'
 	CmdletsToExport 	    = @() 
 	VariablesToExport 	    = @() 
 	AliasesToExport 	    = @() 
